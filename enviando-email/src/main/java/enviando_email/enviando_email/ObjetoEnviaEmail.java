@@ -30,7 +30,7 @@ public class ObjetoEnviaEmail {
 		this.textoEmail = textoEmail;
 	}
 
-	public void EnviarEmai() throws Exception {
+	public void EnviarEmai(boolean envioHtml) throws Exception {
 		
 			
 			//instanciando a classe properties
@@ -80,8 +80,14 @@ public class ObjetoEnviaEmail {
 			//assunto do email
 			message.setSubject(assuntoEmail);
 			
-			//corpo do email
-			message.setText(textoEmail);
+			if (envioHtml) {
+				message.setContent(textoEmail, "text/html; charset=utf-8");
+			}else {
+				//corpo do email
+				message.setText(textoEmail);
+			}
+			
+			
 			
 			//enviando a mensagem
 			Transport.send(message);
