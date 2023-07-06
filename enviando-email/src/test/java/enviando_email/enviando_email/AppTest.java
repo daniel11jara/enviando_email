@@ -38,7 +38,7 @@ public class AppTest
 		                              
 		ObjetoEnviaEmail enviaEmail = new ObjetoEnviaEmail("danieltijara@gmail.com", "daniel", "testando email", stringBuilderTextoEmail.toString());
 		
-		enviaEmail.EnviarEmai(true);
+		enviaEmail.EnviarEmaiAnexo(true);
 		
 		
    }
