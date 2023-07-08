@@ -5,6 +5,9 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Properties;
 
 import javax.activation.DataHandler;
@@ -170,18 +173,41 @@ public class ObjetoEnviaEmail {
 			corpoEmail.setText(textoEmail);
 		}
 		
-		//parte 2 que sao os anexos
-		MimeBodyPart anexoEmail = new MimeBodyPart();
-		anexoEmail.setDataHandler(new DataHandler(new ByteArrayDataSource(simuladorDePdf(), "application/pdf")));
-		anexoEmail.setFileName("anexoemail.pdf");
+		//mandando varios anexos
+		List<FileInputStream> arquivos = new ArrayList<FileInputStream>();
 		
+		//colocando 4 anexos
+		arquivos.add(simuladorDePdf());
+		arquivos.add(simuladorDePdf());
+		arquivos.add(simuladorDePdf());
+		arquivos.add(simuladorDePdf());
+		
+		//colocando o corpo do email antes do for
 		//juntando as duas partes feitas acima
 		Multipart multipart = new MimeMultipart();
-		
+				
 		//adicionando no corpo do email
 		multipart.addBodyPart(corpoEmail);
 		
+		//fazendo um for para criacao dos arquivos 
+		
+		int index = 0;//criando a numeracao dos pdfs -- 1, 2, 3....
+		for (FileInputStream fileInputStream : arquivos) {
+			
+		//parte 2 que sao os anexos
+		//criando o anexo	
+		MimeBodyPart anexoEmail = new MimeBodyPart();
+		anexoEmail.setDataHandler(new DataHandler(new ByteArrayDataSource(fileInputStream, "application/pdf")));
+		
+		//colocando um nome para cada arquivo
+		anexoEmail.setFileName("anexoemail"+ index +".pdf");//inserindo a numeracao
+		
+		//adicionando no objeto
 		multipart.addBodyPart(anexoEmail);
+		
+		index++;
+		
+		}
 		
 		message.setContent(multipart);
 		
